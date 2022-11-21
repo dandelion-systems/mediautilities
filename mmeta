@@ -1,0 +1,60 @@
+#!/usr/bin/env python3
+
+import os
+import sys
+from optparse import OptionParser
+import mediameta as mm
+
+def main():
+	opt_parser = OptionParser('Usage: %prog media_file_or_directory' + os.linesep + 'Only jpeg, heic, tiff and mov files will be processed.')
+	opt_parser.add_option('-f', '--folder', help='Save metadata for all files in a folder.', action='store_true', dest='folder')
+	opt_parser.add_option('-d', '--display', help='Only display metadata, do not create a file.', action='store_true', dest='display')
+	opt_parser.add_option('-e', '--encoding', help='Set the code page for string values, default = cp1251.', action='store', type='string', dest='encoding', default='utf_8')
+		
+	try:
+		(options,args) = opt_parser.parse_args(sys.argv)
+		do_search_folder = options.folder
+		do_display = options.display
+		encoding = options.encoding
+		file_or_folder_name = args[1]
+	except IndexError:				# handle unknown options as OptionParser does not
+		opt_parser.print_help()		# print help by default in this case
+		return
+	except:							# if --help is specified, OptionParser prints help 
+		return						# and throws an exception. Handle it gracefully here
+
+	if do_search_folder:
+		work_range = []
+		for f in os.scandir(file_or_folder_name):
+			if f.is_file(follow_symlinks=False):
+				work_range.append(f.path)
+	else:
+		work_range = [file_or_folder_name,]
+
+	for file_name in work_range:
+		try:
+			meta_data = mm.ImageMetadata(file_name, encoding)              # JPEG or HEIC or TIFF
+		except mm.UnsupportedMediaFile:
+			try:
+				meta_data = mm.VideoMetadata(file_name, encoding)          # MOV
+			except mm.UnsupportedMediaFile:
+				print('File ' + file_name + ' cannot be processed. No metadata or this format is not supported.')
+				continue
+		
+		if do_display:
+			print(file_name)
+			print(meta_data)
+			print(''.ljust(10,'-'))
+		else:
+			file_name_no_ext, _ = os.path.splitext(file_name)
+			fm = open(file_name_no_ext + '.metadata', 'w')
+			fm.write(str(meta_data))
+			fm.close()
+
+	return
+
+if __name__ == '__main__':
+	try:
+		main()
+	except:
+		print (sys.exc_info())
