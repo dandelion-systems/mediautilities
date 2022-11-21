@@ -41,6 +41,8 @@ def main():
 				print('File ' + file_name + ' cannot be processed. No metadata or this format is not supported.')
 				continue
 		
+		meta_data.interpret()
+
 		if do_display:
 			print(file_name)
 			print(meta_data)
