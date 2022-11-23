@@ -5,11 +5,22 @@ import sys
 from optparse import OptionParser
 import mediameta as mm
 
+def get_gps_link(i:mm.ImageMetadata) -> str:
+	try:
+		return mm.GPS_link(
+			lat     = i['GPSLatitude'],
+			lat_ref = i['GPSLatitudeRef'],
+			lng     = i['GPSLongitude'],
+			lng_ref = i['GPSLongitudeRef']
+		)
+	except:
+		return 'No GPS data.'
+
 def main():
 	opt_parser = OptionParser('Usage: %prog media_file_or_directory' + os.linesep + 'Only jpeg, heic, tiff and mov files will be processed.')
 	opt_parser.add_option('-f', '--folder', help='Save metadata for all files in a folder.', action='store_true', dest='folder')
 	opt_parser.add_option('-d', '--display', help='Only display metadata, do not create a file.', action='store_true', dest='display')
-	opt_parser.add_option('-e', '--encoding', help='Set the code page for string values, default = cp1251.', action='store', type='string', dest='encoding', default='utf_8')
+	opt_parser.add_option('-e', '--encoding', help='Set the code page for string values, default = utf_8.', action='store', type='string', dest='encoding', default='utf_8')
 		
 	try:
 		(options,args) = opt_parser.parse_args(sys.argv)
@@ -46,11 +57,13 @@ def main():
 		if do_display:
 			print(file_name)
 			print(meta_data)
+			print('Maps: ' + get_gps_link(meta_data))
 			print(''.ljust(10,'-'))
 		else:
 			file_name_no_ext, _ = os.path.splitext(file_name)
 			fm = open(file_name_no_ext + '.metadata', 'w')
 			fm.write(str(meta_data))
+			fm.write('Maps: ' + get_gps_link(meta_data))
 			fm.close()
 
 	return
