@@ -55,5 +55,5 @@ Do the same but with custom prefix:
 
 And again the same but keeping only the date, not the time in a file name:
 
-	mrename --prefix="Souvenir de " --time-stamp=%Y-%m-%d  ~/img
+	mrename --prefix="Souvenir de" --time-stamp=%Y-%m-%d  ~/img
 
