@@ -11,7 +11,7 @@ You can install mediameta through pip:
 
 	pip install mediameta
 
-`sample_mm_cli.py` is the minimalictic sample. It scans the local folder '.img' for JPEG, HEIC or TIFF impages and prints out their metadata into standard output. The other two Python scripts are a bit more sophisticated, see below.
+`sample_mm_cli.py` is the minimalistic sample. It scans the local folder '.img' for JPEG, HEIC or TIFF impages and prints out their metadata into standard output. The other two Python scripts are a bit more sophisticated, see below.
 
 ## mmeta
 
