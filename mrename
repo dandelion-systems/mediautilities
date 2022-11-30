@@ -1,4 +1,33 @@
 #!/usr/bin/env python3
+'''
+	This file is a demonstrator of mediameta Python package functionality.
+
+	Copyright 2022 Dandelion Systems <dandelion.systems at gmail.com>
+
+    mrename uses the date and time when an image or video was taken to rename 
+    the file. It operates on a folder which can contain a mixture of 
+    JPEG, HEIC, TIFF and MOV files. Control the prefix, postfix and time stamp
+    format through the command line options. Dry runs are possible too.
+
+	See https://github.com/dandelion-systems/mediameta for the source code of
+	the package.
+	
+	You can install mediameta through pip:
+	pip install mediameta
+
+	mediameta is free software; you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+
+	mediameta is distributed in the hope that it will be useful, but
+	WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+	General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with mediameta. If not, see <http://www.gnu.org/licenses/>.
+'''
 
 import os
 import sys

@@ -1,13 +1,47 @@
 #!/usr/bin/env python3
+'''
+	This file is a demonstrator of mediameta Python package functionality.
+
+	Copyright 2022 Dandelion Systems <dandelion.systems at gmail.com>
+
+	mmeta parses all metadata it finds in a JPEG, HEIC, TIFF or MOV file and
+	either creates a file with the same name and .metadata extension or 
+	displays its findings in a standard output. Should it find GPS coordinates,
+	in an image file, a link to Google Maps will be generated too.
+
+	See the command line options for details.
+
+	See https://github.com/dandelion-systems/mediameta for the source code of
+	the package.
+	
+	You can install mediameta through pip:
+	pip install mediameta
+
+	mediameta is free software; you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+
+	mediameta is distributed in the hope that it will be useful, but
+	WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+	General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with mediameta. If not, see <http://www.gnu.org/licenses/>.
+'''
 
 import os
 import sys
 from optparse import OptionParser
-import mediameta as mm
+from mediameta import ImageMetadata
+from mediameta import VideoMetadata
+from mediameta import UnsupportedMediaFile
+from mediameta import GPS_link
 
-def get_gps_link(i:mm.ImageMetadata) -> str:
+def get_gps_link(i:ImageMetadata) -> str:
 	try:
-		return mm.GPS_link(
+		return GPS_link(
 			lat     = i['GPSLatitude'],
 			lat_ref = i['GPSLatitudeRef'],
 			lng     = i['GPSLongitude'],
@@ -44,12 +78,15 @@ def main():
 
 	for file_name in work_range:
 		try:
-			meta_data = mm.ImageMetadata(file_name, encoding)              # JPEG or HEIC or TIFF
-		except mm.UnsupportedMediaFile:
+			# JPEG or HEIC or TIFF
+			meta_data = ImageMetadata(file_name, encoding)
+		except UnsupportedMediaFile:
 			try:
-				meta_data = mm.VideoMetadata(file_name, encoding)          # MOV
-			except mm.UnsupportedMediaFile:
-				print('File ' + file_name + ' cannot be processed. No metadata or this format is not supported.')
+				# MOV
+				meta_data = VideoMetadata(file_name, encoding)
+			except UnsupportedMediaFile:
+				print('File ' + file_name + ' cannot be processed. \
+					No metadata or this format is not supported.')
 				continue
 		
 		meta_data.interpret()
