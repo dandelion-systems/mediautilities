@@ -5,7 +5,7 @@ These Python scripts are demonstrators of mediameta Python package functionality
 Copyright 2022 Dandelion Systems <dandelion.systems at gmail.com>
 
 See https://github.com/dandelion-systems/mediameta for the source code of
-the package and intallation tips.
+the package and installation tips.
 
 `sample_mm_cli.py` is the minimalistic sample. It scans the local folder '.img' for JPEG, HEIC or TIFF impages and prints out their metadata into standard output. The other two Python scripts are a bit more sophisticated, see below.
 
